@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Безопасное использование ИИ-ассистентов — памятка сотрудника</title>
+<style>
+  :root {
+    --bg: #f7f8f5;
+    --card: #ffffff;
+    --text: #2d3436;
+    --muted: #5f6b6d;
+    --accent: #3d7a6e;
+    --accent-light: #e6f1ee;
+    --ok: #3d7a4f;
+    --ok-light: #e8f4ec;
+    --no: #9a4b4b;
+    --no-light: #f7e9e9;
+    --warn: #8a6d2f;
+    --warn-light: #fbf4e2;
+    --border: #d9dfdc;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 24px 20px 60px; }
+  header {
+    background: var(--accent);
+    color: #fff;
+    padding: 36px 20px;
+    border-radius: 14px;
+    margin-bottom: 24px;
+  }
+  header h1 { margin: 0 0 10px; font-size: 2em; line-height: 1.25; }
+  header p { margin: 0; font-size: 1.05em; opacity: .95; }
+  h2 {
+    font-size: 1.55em;
+    color: var(--accent);
+    margin: 0 0 14px;
+    padding-top: 10px;
+    border-top: 2px solid var(--border);
+  }
+  h3 { font-size: 1.15em; margin: 18px 0 8px; }
+  section { margin-bottom: 36px; scroll-margin-top: 16px; }
+  p { margin: 0 0 12px; }
+  ul, ol { margin: 0 0 12px; padding-left: 1.3em; }
+  li { margin-bottom: 6px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .term {
+    background: var(--accent-light);
+    border-radius: 6px;
+    padding: 1px 6px;
+    font-weight: 600;
+  }
+  .note {
+    border-left: 5px solid var(--warn);
+    background: var(--warn-light);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 14px 0;
+  }
+  .toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 30px;
+  }
+  .toc h2 { border: none; margin: 0 0 8px; padding: 0; font-size: 1.25em; }
+  .toc ol { margin: 0; }
+  .toc a { color: var(--accent); font-weight: 600; text-decoration: none; }
+  .toc a:hover, .toc a:focus { text-decoration: underline; }
+
+  /* Раскрывающиеся блоки */
+  .more-btn {
+    font: inherit;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    min-height: 44px;
+  }
+  .more-btn:focus-visible, button:focus-visible, label:focus-within { outline: 3px solid #9cc7bd; outline-offset: 2px; }
+  .more-body { display: none; margin-top: 12px; padding-top: 4px; }
+  .more-body.open { display: block; }
+
+  /* Два столбика: можно / нельзя */
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .box { border-radius: 12px; padding: 16px 18px; }
+  .box.do { background: var(--ok-light); border: 1px solid #b9dcc4; }
+  .box.dont { background: var(--no-light); border: 1px solid #e3bcbc; }
+  .box h3 { margin-top: 0; }
+  .box.do h3 { color: var(--ok); }
+  .box.dont h3 { color: var(--no); }
+
+  /* Чек-лист */
+  .checklist { list-style: none; padding: 0; margin: 0; }
+  .checklist li {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 0;
+  }
+  .checklist label {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    cursor: pointer;
+    min-height: 44px;
+  }
+  .checklist input { width: 22px; height: 22px; margin-top: 3px; flex-shrink: 0; accent-color: var(--accent); }
+  .checklist input:checked + span { text-decoration: line-through; color: var(--muted); }
+  .progress { font-weight: 600; color: var(--accent); margin: 8px 0 12px; }
+
+  /* Переключатель и карточки примеров */
+  .switch { display: inline-flex; border: 2px solid var(--accent); border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+  .switch button {
+    font: inherit; font-weight: 700; border: 0; background: #fff; color: var(--accent);
+    padding: 10px 18px; cursor: pointer; min-height: 44px;
+  }
+  .switch button.active.can { background: var(--ok); color: #fff; }
+  .switch button.active.cant { background: var(--no); color: #fff; }
+  .example { border-left: 6px solid var(--border); }
+  .example.can { border-left-color: var(--ok); }
+  .example.cant { border-left-color: var(--no); }
+  .example h3 { margin: 0 0 8px; }
+  .tag { display: inline-block; font-size: .85em; font-weight: 700; padding: 2px 10px; border-radius: 20px; margin-bottom: 8px; }
+  .tag.can { background: var(--ok-light); color: var(--ok); }
+  .tag.cant { background: var(--no-light); color: var(--no); }
+  .hidden-by-filter { display: none !important; }
+
+  .template-field { display: block; margin: 10px 0; }
+  .template-field span { font-weight: 600; display: block; margin-bottom: 4px; }
+  .template-field .line { border-bottom: 2px dashed #aab4b1; min-height: 28px; }
+  .small { font-size: .9em; color: var(--muted); }
+  footer { text-align: center; color: var(--muted); font-size: .9em; margin-top: 40px; }
+
+  @media (max-width: 640px) {
+    body { font-size: 17px; }
+    header h1 { font-size: 1.6em; }
+    .do-dont { grid-template-columns: 1fr; }
+    .wrap { padding: 16px 14px 40px; }
+  }
+
+  @media print {
+    @page { size: A4; margin: 14mm; }
+    body { background: #fff; font-size: 12pt; line-height: 1.45; }
+    .wrap { max-width: none; padding: 0; }
+    header { border-radius: 0; padding: 14px; background: #fff; color: var(--text); border-bottom: 2px solid var(--accent); }
+    h2 { font-size: 14pt; page-break-after: avoid; margin-bottom: 8px; }
+    h3 { font-size: 12pt; page-break-after: avoid; }
+    section { margin-bottom: 14px; }
+    .card, .box, .example, .note { page-break-inside: avoid; }
+    .more-btn, .switch, .progress, .toc-note { display: none !important; }
+    .more-body { display: block !important; margin-top: 4px; }
+    .do-dont { gap: 8px; }
+    .example, .hidden-by-filter { display: block !important; }
+    .answer-print { display: block !important; }
+    .toc { padding: 8px 12px; margin-bottom: 12px; page-break-inside: avoid; }
+    .toc a { color: var(--text); text-decoration: none; }
+    .answer-btn { display: none !important; }
+    a { color: inherit; }
+    footer { margin-top: 10px; font-size: 9pt; }
+    .checklist li { page-break-inside: avoid; margin-bottom: 4px; }
+    .checklist label { padding: 6px 10px; min-height: 0; }
+    .checklist input { width: 14px; height: 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Безопасное использование ИИ-ассистентов</h1>
+  <p>Памятка для сотрудников: что можно делать, чего делать нельзя и как проверять ответы. Читается за 15 минут.</p>
+</header>
+
+<nav class="toc" aria-label="Оглавление">
+  <h2>Содержание</h2>
+  <ol>
+    <li><a href="#s1">Что такое ИИ-ассистент</a></li>
+    <li><a href="#s2">Что можно делать</a></li>
+    <li><a href="#s3">Чего нельзя делать</a></li>
+    <li><a href="#s4">Как проверять ответы</a></li>
+    <li><a href="#s5">Правила компании (заполнить)</a></li>
+    <li><a href="#s6">Примеры «можно / нельзя»</a></li>
+    <li><a href="#s7">Чек-лист перед отправкой запроса</a></li>
+  </ol>
+</nav>
+
+<!-- 1 -->
+<section id="s1">
+  <h2>1. Что такое ИИ-ассистент</h2>
+  <p>ИИ-ассистент — это программа, с которой можно общаться текстом, как с коллегой: задать вопрос, попросить написать или переписать текст. Примеры таких программ: ChatGPT и аналоги. Текст, который вы вводите в программу, называется <span class="term">запросом</span> (по-английски «промпт»).</p>
+  <div class="card">
+    <h3>Главное, что нужно понимать</h3>
+    <ul>
+      <li><strong>Ассистент не «знает» факты как справочник.</strong> Он составляет ответ, опираясь на огромный объём текстов, на которых его обучали, и подбирает наиболее правдоподобные слова.</li>
+      <li><strong>Он может ошибаться</strong> — и часто делает это очень уверенным тоном.</li>
+      <li><strong>Ошибочный, но уверенный ответ</strong> называют <span class="term">галлюцинацией</span>: программа выдумывает несуществующую статью закона, цитату, цифру или ссылку.</li>
+      <li><strong>Он не видит ваш компьютер, почту и базы данных компании</strong>, если вы сами не вставили туда данные.</li>
+    </ul>
+  </div>
+  <button class="more-btn" aria-expanded="false">Подробнее</button>
+  <div class="more-body">
+    <div class="card">
+      <p>Представьте опытного, но невнимательного помощника, который очень хорошо пишет, быстро читает и иногда путает детали, не признаваясь в этом. Работать с ним можно, но его работу всегда нужно проверять.</p>
+      <p><strong>Пример:</strong> вы спрашиваете, какой срок подачи документов по определённому закону. Ассистент может назвать срок, который звучит убедительно, но уже не действует. Ответ нужно сверить с официальным источником.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="s2">
+  <h2>2. Что можно делать</h2>
+  <p>ИИ-ассистент хорошо справляется с задачами, где важны слова и структура, а не точность конкретных фактов.</p>
+  <div class="do-dont">
+    <div class="box do">
+      <h3>✔ Можно</h3>
+      <ul>
+        <li>Написать черновик письма, поста или объявления</li>
+        <li>Сократить или пересказать длинный текст, который вы уже читали</li>
+        <li>Придумать варианты названия, темы или идеи</li>
+        <li>Объяснить непонятное слово или понятие простыми словами</li>
+        <li>Улучшить формулировку, сделать текст вежливее или короче</li>
+      </ul>
+    </div>
+    <div class="box dont">
+      <h3>✘ Осторожно</h3>
+      <ul>
+        <li>Просить точные цифры, даты и ссылки без проверки</li>
+        <li>Считать, что ответ по закону или медицине окончательный</li>
+        <li>Использовать ответ как готовое решение без вашей оценки</li>
+      </ul>
+    </div>
+  </div>
+  <button class="more-btn" aria-expanded="false">Подробнее: как просить хороший результат</button>
+  <div class="more-body">
+    <div class="card">
+      <p>Чем точнее запрос, тем полезнее ответ. Укажите: <strong>кто</strong> адресат, <strong>зачем</strong> текст, <strong>какой тон</strong> нужен и <strong>какой объём</strong>.</p>
+      <p><strong>Слабый запрос:</strong> «Напиши письмо клиенту».<br>
+      <strong>Сильный запрос:</strong> «Напиши вежливое письмо клиенту из 5 предложений о переносе встречи на другой день. Тон деликатный, без извинений в каждой строке».</p>
+      <p class="small">Важно: в запрос не вставляйте имена, телефоны и другие данные из раздела 3. Вместо них пишите «Клиент», «Коллега», «[дата]».</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section id="s3">
+  <h2>3. Чего нельзя делать</h2>
+  <p>Всё, что вы вставляете в окно ассистента, может храниться на сервисе и быть за пределами компании. Поэтому ниже — то, что в запрос вставлять <strong>запрещено</strong>.</p>
+  <div class="card">
+    <ul>
+      <li><strong>Персональные данные клиентов и сотрудников</strong> — <span class="term">персональные данные</span> это любая информация, по которой можно узнать человека: ФИО, телефон, e-mail, адрес, паспорт, зарплата, данные о здоровье.</li>
+      <li><strong>Коммерческую тайну</strong> — <span class="term">коммерческая тайна</span> это сведения, которые компания скрывает от конкурентов: планы, цены для партнёров, внутренние разработки.</li>
+      <li><strong>Пароли и ключи доступа</strong> — логины с паролями, коды, токены, ссылки для входа в системы.</li>
+      <li><strong>Неопубликованные финансовые данные</strong> — отчётность, прогнозы, суммы сделок, которые ещё не объявлены.</li>
+      <li><strong>Договоры и документы с конфиденциальной информацией</strong> — без прямого разрешения компании.</li>
+    </ul>
+  </div>
+  <button class="more-btn" aria-expanded="false">Подробнее: почему это важно и что делать вместо этого</button>
+  <div class="more-body">
+    <div class="card">
+      <p><strong>Почему:</strong> данные, однажды отправленные во внешний сервис, вы уже не контролируете. Их могут хранить, а при утечке последствия бывают серьёзными: штрафы, потеря клиентов, проблемы у конкретного человека.</p>
+      <p><strong>Что делать вместо этого:</strong></p>
+      <ul>
+        <li>Замените имена на роли: «руководитель отдела», «клиент из региона А».</li>
+        <li>Замените числа примерными: «около 10%» вместо точного значения.</li>
+        <li>Опишите ситуацию своими словами, не копируя документ целиком.</li>
+        <li>Если без реальных данных задача не решается, спросите у руководителя или отдела ИТ/безопасности.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="s4">
+  <h2>4. Как проверять ответы</h2>
+  <p>Проверка — обязательная часть работы. Ассистент — это черновик, а не источник истины.</p>
+  <div class="card">
+    <ul>
+      <li><strong>Сверяйте цифры, даты и ссылки</strong> с официальными источниками.</li>
+      <li><strong>Проверяйте законы и нормативы</strong> по официальным базам, а не по ответу программы.</li>
+      <li><strong>Медицинские советы</strong> не применяйте без врача — ответ ассистента не заменяет консультацию.</li>
+      <li><strong>Не отправляйте ответ клиентам или руководству</strong> без вашей проверки и подписи.</li>
+      <li><strong>Помните про галлюцинации:</strong> несуществующие источники и «точные» цифры без ссылки — повод насторожиться.</li>
+    </ul>
+  </div>
+  <button class="more-btn" aria-expanded="false">Подробнее: простой способ проверки</button>
+  <div class="more-body">
+    <div class="card">
+      <p><strong>Правило трёх вопросов:</strong></p>
+      <ol>
+        <li>Могу ли я назвать источник, где это написано?</li>
+        <li>Если бы этот текст прочитал коллега, ничего бы не пришлось объяснять или извиняться?</li>
+        <li>Если ответ неверен, кто и как это заметит до того, как будет поздно?</li>
+      </ol>
+      <p>Если хотя бы на один вопрос ответ «нет» — проверьте ещё раз или поручите проверку коллеге.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section id="s5">
+  <h2>5. Правила компании</h2>
+  <div class="note">
+    <strong>Внимание:</strong> ниже — шаблон. Его нужно заполнить актуальными правилами вашей компании. <strong>Уточните у своего отдела ИТ/безопасности.</strong> Не заполняйте этот блок по догадкам.
+  </div>
+  <div class="card">
+    <label class="template-field"><span>Какие ИИ-сервисы разрешены для работы:</span><div class="line"></div></label>
+    <label class="template-field"><span>Какие данные запрещено вводить (дополнительно к разделу 3):</span><div class="line"></div></label>
+    <label class="template-field"><span>Можно ли использовать ИИ для работы с клиентами и как согласовать ответ:</span><div class="line"></div></label>
+    <label class="template-field"><span>Кому сообщать о случайной утечке данных (контакт и способ связи):</span><div class="line"></div></label>
+    <label class="template-field"><span>Нужно ли указывать в документах, что текст подготовлен с помощью ИИ:</span><div class="line"></div></label>
+    <label class="template-field"><span>Дата утверждения правил и ответственный:</span><div class="line"></div></label>
+  </div>
+  <p class="small">Уточните у своего отдела ИТ/безопасности: актуальные версии правил и, при необходимости, обучение.</p>
+</section>
+
+<!-- 6 -->
+<section id="s6">
+  <h2>6. Примеры ситуаций «можно / нельзя»</h2>
+  <p>Выберите режим, чтобы увидеть только разрешённые или только запрещённые ситуации. Нажмите «Показать ответ», чтобы открыть объяснение.</p>
+  <div class="switch" role="group" aria-label="Фильтр примеров">
+    <button class="filter-btn active" data-filter="all">Все</button>
+    <button class="filter-btn can" data-filter="can">Можно</button>
+    <button class="filter-btn cant" data-filter="cant">Нельзя</button>
+  </div>
+
+  <div class="card example cant" data-type="cant">
+    <span class="tag cant">Нельзя</span>
+    <h3>Можно ли отправить таблицу с именами клиентов?</h3>
+    <button class="more-btn answer-btn" aria-expanded="false">Показать ответ</button>
+    <div class="more-body">
+      <p><strong>Ответ:</strong> нет.</p>
+      <p><strong>Причина:</strong> имена клиентов — персональные данные. Вместе с ними таблица может содержать контакты и другие сведения. Вставлять такую таблицу в ассистента нельзя, даже «для анализа».</p>
+    </div>
+  </div>
+
+  <div class="card example can" data-type="can">
+    <span class="tag can">Можно</span>
+    <h3>Можно ли вставить в чат черновик публичного поста?</h3>
+    <button class="more-btn answer-btn" aria-expanded="false">Показать ответ</button>
+    <div class="more-body">
+      <p><strong>Ответ:</strong> да, если в тексте нет неопубликованных данных, планов и чужих персональных данных.</p>
+      <p><strong>Причина:</strong> публичный пост уже предназначен для всех. Но перед публикацией текст всё равно нужно проверить сами: факты, цифры и формулировки.</p>
+    </div>
+  </div>
+
+  <div class="card example cant" data-type="cant">
+    <span class="tag cant">Нельзя</span>
+    <h3>Можно ли доверять ответу про налоговый закон без проверки?</h3>
+    <button class="more-btn answer-btn" aria-expanded="false">Показать ответ</button>
+    <div class="more-body">
+      <p><strong>Ответ:</strong> нет.</p>
+      <p><strong>Причина:</strong> ассистент может назвать устаревшую ставку, несуществующую статью или срок. Сверьте информацию с официальным источником или спросите специалиста.</p>
+    </div>
+  </div>
+
+  <div class="card example can" data-type="can">
+    <span class="tag can">Можно</span>
+    <h3>Можно ли попросить объяснить непонятный термин из отчёта?</h3>
+    <button class="more-btn answer-btn" aria-expanded="false">Показать ответ</button>
+    <div class="more-body">
+      <p><strong>Ответ:</strong> да, если в запросе нет реальных данных из отчёта.</p>
+      <p><strong>Причина:</strong> объяснение общего понятия — типичная задача для ассистента. Вставляйте только сам термин, а не весь отчёт.</p>
+    </div>
+  </div>
+
+  <div class="card example cant" data-type="cant">
+    <span class="tag cant">Нельзя</span>
+    <h3>Можно ли вставить пароль, чтобы ассистент помог настроить вход?</h3>
+    <button class="more-btn answer-btn" aria-expanded="false">Показать ответ</button>
+    <div class="more-body">
+      <p><strong>Ответ:</strong> нет, никогда.</p>
+      <p><strong>Причина:</strong> пароль в чате становится доступен внешнему сервису. Смените пароль, если он уже был введён, и обратитесь в отдел ИТ/безопасности.</p>
+    </div>
+  </div>
+
+  <div class="card example can" data-type="can">
+    <span class="tag can">Можно</span>
+    <h3>Можно ли попросить помочь с формулировкой ответа клиенту?</h3>
+    <button class="more-btn answer-btn" aria-expanded="false">Показать ответ</button>
+    <div class="more-body">
+      <p><strong>Ответ:</strong> да, без личных данных клиента.</p>
+      <p><strong>Причина:</strong> формулировку можно улучшить, а имя, номер заказа и суть конфликта заменить общими словами. Перед отправкой прочитайте текст сами.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section id="s7">
+  <h2>7. Чек-лист «Перед отправкой запроса в ИИ»</h2>
+  <p class="progress" id="progress" aria-live="polite">Отмечено: 0 из 6</p>
+  <ul class="checklist">
+    <li><label><input type="checkbox"><span>В запросе нет имён, телефонов, e-mail и других персональных данных.</span></label></li>
+    <li><label><input type="checkbox"><span>Нет паролей, ключей доступа и ссылок для входа.</span></label></li>
+    <li><label><input type="checkbox"><span>Нет коммерческой тайны и неопубликованных финансовых данных.</span></label></li>
+    <li><label><input type="checkbox"><span>Документ с конфиденциальной информацией не вставлен без разрешения компании.</span></label></li>
+    <li><label><input type="checkbox"><span>Я понимаю, что ответ может содержать ошибки и выдуманные факты.</span></label></li>
+    <li><label><input type="checkbox"><span>Перед отправкой клиенту или руководству я проверю цифры, даты и факты.</span></label></li>
+  </ul>
+</section>
+
+<footer>
+  <p>Памятка носит ознакомительный характер. Актуальные правила компании — у отдела ИТ/безопасности.</p>
+</footer>
+
+</div>
+
+<script>
+  // Раскрывающиеся блоки «Подробнее» и «Показать ответ»
+  document.querySelectorAll('.more-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const body = btn.nextElementSibling;
+      const isOpen = body.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen);
+      if (btn.classList.contains('answer-btn')) {
+        btn.textContent = isOpen ? 'Скрыть ответ' : 'Показать ответ';
+      }
+    });
+  });
+
+  // Фильтр «Все / Можно / Нельзя»
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const examples = document.querySelectorAll('.example');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter;
+      filterBtns.forEach(b => b.classList.toggle('active', b === btn));
+      examples.forEach(card => {
+        card.classList.toggle('hidden-by-filter', f !== 'all' && card.dataset.type !== f);
+      });
+    });
+  });
+
+  // Чек-лист (состояние не сохраняется)
+  const boxes = document.querySelectorAll('.checklist input');
+  const progress = document.getElementById('progress');
+  function updateProgress() {
+    const done = [...boxes].filter(b => b.checked).length;
+    progress.textContent = `Отмечено: ${done} из ${boxes.length}` + (done === boxes.length ? ' — отлично, можно отправлять!' : '');
+  }
+  boxes.forEach(b => b.addEventListener('change', updateProgress));
+
+  // Перед печатью раскрываем всё
+  window.addEventListener('beforeprint', () => {
+    document.querySelectorAll('.more-body').forEach(b => b.classList.add('open'));
+  });
+</script>
+</body>
+</html>
